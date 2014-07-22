@@ -1,0 +1,29 @@
+stripshow{
+	image strip;
+	int size;
+	int w;
+	int h;
+	int X;
+	
+	w = SCREEN_SIZE-1;
+	h = w;
+	size = h / 10;
+	X = size;
+	
+	strip.shape = [w,h];
+	
+	while(true){
+		while(X<=h-size){
+			strip = {{((y-X<=size)&(y-X>=(0-size)))? X*225/(h-size*2) : 0,0,0}};
+			X = X+1;
+			strip.visible = true;
+			pause 1;
+		}
+		while(X > size){
+			strip={{((y-X<=size)&(y-X>=(0-size)))? X*225/(h-size*2):0,0,0}};
+			X = X-1;
+			strip.visible = true;
+			pause 1;
+		}
+	}
+}

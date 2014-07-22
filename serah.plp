@@ -1,0 +1,45 @@
+serah{ 
+	image img; 
+	image pic; 
+	boolean a;
+	int b;
+	pixel c;
+	int X;
+	int Y;
+	int i;
+	
+	i=0;
+	
+	b = 1<2 ? 0 : 29;
+	a = true;
+	c = {{0,0,0}};
+	
+			
+	pic = "white100.jpg"; 
+	
+	X=pic.width-1;
+	Y=pic.height-1;
+	img.shape = [pic.width,pic.height];
+	
+	if(1==2){
+		img.location = [10, 10];
+	} else {
+		img.location = [pic.width + 10, 0];
+	}
+	
+	img = {{pic[X-x,Y-y]red /2,pic[X-x,Y-y]green/2,pic[X-x,Y-y]blue/2}};
+	
+	while(b<=30){
+		img.pixels[b,b]={{0,0,Z}};
+		b = b+1;
+	}
+	
+	while(i<X){
+		img.pixels[i,100]={{Z,Z,Z}};
+		i = i+1;
+	}
+	
+	pic.visible = true;
+	pause(1000);
+	img.visible = true;
+}

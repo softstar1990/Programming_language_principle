@@ -1,0 +1,24 @@
+redheart{
+
+image heart;
+int w;
+int h;
+int X;
+int Y;
+
+w = SCREEN_SIZE - 38;
+h = SCREEN_SIZE - 38;
+X = w/2;
+Y = h/2;
+
+heart.shape = [w,h];
+
+heart = {{ 
+		Z, 
+		(x-X)*(x-X)+(Y-y)*(Y-y)-(Y-y)*(x-X>0? x-X : X-x) < w*60 ? 0 : Z, 
+		(x-X)*(x-X)+(Y-y)*(Y-y)-(Y-y)*(x-X>0? x-X : X-x) < w*60 ? 0 : Z
+		}};
+		
+heart.visible = true;
+
+}

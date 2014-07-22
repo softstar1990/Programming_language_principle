@@ -1,0 +1,16 @@
+upside_down {
+image cfl;
+image ud;
+int Y;
+int X;
+
+cfl = "http://www.cise.ufl.edu/news/NA00166/image.png";
+
+ud.shape  = [cfl.width, cfl.height];
+Y = cfl.height-1;
+X = cfl.width-1;
+
+ud = {{cfl[X-x, Y-y]red,cfl[X-x, Y-y]green,	cfl[X-x, Y-y]blue }};
+ud.visible = true;
+
+}

@@ -1,0 +1,30 @@
+negative {
+image pos;
+image neg;
+image new;
+int Y;
+int X;
+int count;
+
+pos = "http://scontent-b-dfw.xx.fbcdn.net/hphotos-ash3/46715_10151270885109632_1193401170_n.jpg";
+
+neg.shape  = [pos.width, pos.height];
+Y = pos.height-1;
+X = pos.width-1;
+
+neg = {{Z-pos[x, y]red,Z-pos[x, y]green,Z-pos[x, y]blue }};
+
+new = neg;
+new.visible = true;
+
+count = 100;
+
+while (count > 0){
+pause 5;
+new = {{ (neg[x,y]red * count + pos[x,y]red * (100-count))/100,
+          (neg[x,y]green* count + pos[x,y]green*(100-count))/100,
+          (neg[x,y]blue * count + pos[x,y]blue*(100-count))/100}}  ;
+count = count - 1;
+}
+
+}

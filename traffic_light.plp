@@ -1,0 +1,37 @@
+traffic_light {
+
+image light;
+int centerX;
+int centerY;
+int w;
+int h;
+//
+
+w = SCREEN_SIZE-38;
+h = SCREEN_SIZE-38;
+centerX = w/2;
+centerY = h/2;
+
+light.shape = [w,h];
+
+
+while (true) {
+//turn red
+light = {{ (x-centerX)*(x-centerX) + (y - centerY)*(y - centerY) < w*w/6 ? Z : 0, 0, 0}};
+light.visible = true;
+pause 1000;
+//turn green;
+light = {{0, 
+          (x-centerX)*(x-centerX) + (y - centerY)*(y - centerY) < w*w/6 ? Z : 0,  
+          0}};
+light.visible = true;
+pause 1000;
+//turn yellow;
+light = {{(x-centerX)*(x-centerX) + (y - centerY)*(y - centerY) < w*w/6 ? Z : 0, 
+          (x-centerX)*(x-centerX) + (y - centerY)*(y - centerY) < w*w/6 ? Z : 0,  
+          0}};
+pause 1000;
+light.visible = true;
+}
+
+}

@@ -1,0 +1,53 @@
+imagechange{
+	image i1;
+	image i2;
+	image i3;
+	image i4;
+	image new;
+
+	int w;
+	int h;
+	int X;
+	int Y;
+	int count;
+	
+	i1 = "001.jpg";
+	i2 = "002.jpg";
+	i3 = "003.jpg";
+	i4 = "004.jpg";
+	
+	w = i1.width;
+	h = i1.height;
+	
+	i2.shape = [w,h];
+	i3.shape = [w,h];
+	i4.shape = [w,h];
+	new = i3;
+	new.visible = true;
+	pause 200;
+	
+	//Horizontal
+	Y = h/2;
+	while(Y >0){
+		new = 
+		{{(y<=(h-Y) & y>=Y ) ? i2[x,y]red : i3[x,y]red,
+		(y<=(h-Y) & y>=Y ) ? i2[x,y]blue: i3[x,y]blue,
+		(y<=(h-Y) & y>=Y ) ? i2[x,y]green: i3[x,y]green }};
+		pause 1;
+		Y = Y-1;
+	}
+	
+	pause 2000;
+
+	//Vertical
+	count = 0;
+	X = w/4;
+	while(count<=X){
+		new = 
+		{{(x<=X & x>=count )|(x<=X*2 & x>count+X*1 )|(x<=X*3 & x>count+X*2 )|(x<=X*4 & x>count+X*3 ) ? i2[x,y]red : i4[x,y]red,
+		(x<=X & x>=count )|(x<=X*2 & x>count+X*1 )|(x<=X*3 & x>count+X*2 )|(x<=X*4 & x>count+X*3 )  ? i2[x,y]blue: i4[x,y]blue,
+		(x<=X & x>=count )|(x<=X*2 & x>count+X*1 )|(x<=X*3 & x>count+X*2 )|(x<=X*4 & x>count+X*3 )  ? i2[x,y]green: i4[x,y]green }};
+		pause 1;
+		count = count+1;
+	}
+}

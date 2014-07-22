@@ -1,0 +1,33 @@
+combine {
+image century;
+image fries;
+image new;
+int count;
+
+int w;
+int h;
+
+
+century = "http://colleges.usnews.rankingsandreviews.com/img/college-photo_6060..jpg";
+w = century.width*3/2;
+h = century.height*3/2;
+
+fries = "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTFQUkTuwWaOP3rWZJkzhNZXyaAgC5R2t0FaSuPzPeczUZe1Gz76Q";
+
+fries.shape = [w,h];
+century.shape = [w,h];
+new.shape = [w,h];
+
+new = century;
+new.visible = true;
+
+count = 100;
+while (count > 0){
+pause 1;
+new = {{ (century[x,y]red * count + fries[x,y]red * (100-count))/100,
+          (century[x,y]green* count + fries[x,y]green*(100-count))/100,
+          (century[x,y]blue * count + fries[x,y]blue*(100-count))/100}}  ;
+count = count - 1;
+}
+
+}
