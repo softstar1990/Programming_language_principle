@@ -28,65 +28,65 @@ import cop5555fa13.ast.ASTNode;
 import cop5555fa13.ast.ToStringVisitor;
 
 public class TestParser {
-	
+
 	public class PrintInputOnException extends Timeout{
 
-        public PrintInputOnException(int millis) {
-            super(millis);
-        }
+		public PrintInputOnException(int millis) {
+			super(millis);
+		}
 
-        @Override
-        public Statement apply(Statement base, org.junit.runner.Description description) {
-        
-            final Statement fromSuper = super.apply(base, description);
-            return new Statement() {
+		@Override
+		public Statement apply(Statement base, org.junit.runner.Description description) {
 
-                @Override
-                public void evaluate() throws Throwable {
-                    String errString = null;
-                    try{
-                        fromSuper.evaluate();
-                    } catch (SyntaxException e){
-                    	errString = "SyntaxException (" + e.getMessage() + "), Original Input : " + input[0];
-                    	if (expectedIncorrect != null)
-                    		errString += ", Expected : " + Arrays.toString(expectedIncorrect);
-                    	errString += "\n";
-                    	throw new Exception(errString, e);
-                    } catch (LexicalException e){
-                    	errString = "LexicalException (" + e.getMessage() + "), Original Input : " + input[0] ;
-                    	if (expectedIncorrect != null)
-                    		errString += ", Expected : " + Arrays.toString(expectedIncorrect);
-                    	errString += "\n";
-                        throw new Exception(errString, e);
-                    } catch (AssertionError e) {
-                    	errString = "AssertionError (" + e.getMessage() + "), Original Input : " + input[0] ;
-                    	if (expectedIncorrect != null)
-                    		errString += ", Expected : " + Arrays.toString(expectedIncorrect);
-                    	errString += "\n";
-                        throw new AssertionError(errString, e);
-                    } catch (RuntimeException e) {
-                    	errString = "RuntimeException (" + e.getMessage() + "), Original Input : " + input[0] ;
-                    	if (expectedIncorrect != null)
-                    		errString += ", Expected : " + Arrays.toString(expectedIncorrect);
-                    	errString += "\n";
-                        throw new RuntimeException(errString, e);
-                    } catch (Exception e){
-                    	errString = "Exception (" + e.getMessage() + "), Original Input : " + input[0] ;
-                    	if (expectedIncorrect != null)
-                    		errString += ", Expected : " + Arrays.toString(expectedIncorrect);
-                    	errString += "\n";
-                        throw new Exception(errString, e);
-                    }
-                }
-            };
-        }
+			final Statement fromSuper = super.apply(base, description);
+			return new Statement() {
 
-    }
+				@Override
+				public void evaluate() throws Throwable {
+					String errString = null;
+					try{
+						fromSuper.evaluate();
+					} catch (SyntaxException e){
+						errString = "SyntaxException (" + e.getMessage() + "), Original Input : " + input[0];
+						if (expectedIncorrect != null)
+							errString += ", Expected : " + Arrays.toString(expectedIncorrect);
+						errString += "\n";
+						throw new Exception(errString, e);
+					} catch (LexicalException e){
+						errString = "LexicalException (" + e.getMessage() + "), Original Input : " + input[0] ;
+						if (expectedIncorrect != null)
+							errString += ", Expected : " + Arrays.toString(expectedIncorrect);
+						errString += "\n";
+						throw new Exception(errString, e);
+					} catch (AssertionError e) {
+						errString = "AssertionError (" + e.getMessage() + "), Original Input : " + input[0] ;
+						if (expectedIncorrect != null)
+							errString += ", Expected : " + Arrays.toString(expectedIncorrect);
+						errString += "\n";
+						throw new AssertionError(errString, e);
+					} catch (RuntimeException e) {
+						errString = "RuntimeException (" + e.getMessage() + "), Original Input : " + input[0] ;
+						if (expectedIncorrect != null)
+							errString += ", Expected : " + Arrays.toString(expectedIncorrect);
+						errString += "\n";
+						throw new RuntimeException(errString, e);
+					} catch (Exception e){
+						errString = "Exception (" + e.getMessage() + "), Original Input : " + input[0] ;
+						if (expectedIncorrect != null)
+							errString += ", Expected : " + Arrays.toString(expectedIncorrect);
+						errString += "\n";
+						throw new Exception(errString, e);
+					}
+				}
+			};
+		}
+
+	}
 
 	protected static final int TIMEOUT = 10000; //10 second timeout
-    @Rule public TestRule globalTimeout= new PrintInputOnException(TIMEOUT); 
-    @Rule public TestName name = new TestName();
-	
+	@Rule public TestRule globalTimeout= new PrintInputOnException(TIMEOUT); 
+	@Rule public TestName name = new TestName();
+
 	private String[] input = new String[1];
 	private String expectedCorrect = null;
 	private Kind[] expectedIncorrect = null;
@@ -127,21 +127,21 @@ public class TestParser {
 			actual[i] = se.getKind();
 		}
 		assertArrayEquals(expected, actual);
-		
+
 		// put ("testBadExpr1", new ArrayList<Kind>(){{add(Kind.green);add(Kind.EOF);}});
-//System.out.print("put(\"");
-//System.out.print(name.getMethodName());
-//System.out.print("\", new Kind[]{");
-//		int numErrors = parser.errorList.size();
-//System.out.print("Kind." + parser.errorList.get(0).getKind());		
-//		for (int i = 1; i < numErrors; ++i) {
-//System.out.print(", Kind." + parser.errorList.get(i).getKind());
-//		}
-//System.out.println("});");		
-//		throw parser.new SyntaxException(null, null);
+		//System.out.print("put(\"");
+		//System.out.print(name.getMethodName());
+		//System.out.print("\", new Kind[]{");
+		//		int numErrors = parser.errorList.size();
+		//System.out.print("Kind." + parser.errorList.get(0).getKind());		
+		//		for (int i = 1; i < numErrors; ++i) {
+		//System.out.print(", Kind." + parser.errorList.get(i).getKind());
+		//		}
+		//System.out.println("});");		
+		//		throw parser.new SyntaxException(null, null);
 	}
 
-	
+
 	private void checkErrorInput(String program, Kind[] expected)
 			throws LexicalException, SyntaxException {
 		expectedIncorrect = expected;
@@ -159,12 +159,12 @@ public class TestParser {
 		parser = new Parser(stream);
 		parser.parse();
 		assertTrue("expected parser.getErrorList() to not be empty", !parser.getErrorList().isEmpty());
-		
+
 	}
-	
+
 
 	private void parseInput(String program) throws LexicalException,
-			SyntaxException {
+	SyntaxException {
 		expectedCorrect = treeString.get(name.getMethodName());
 		assert expectedCorrect != null;
 		TokenStream stream = new TokenStream(program);
@@ -188,7 +188,7 @@ public class TestParser {
 		try {
 			root.visit(sv, "");
 			String actual = sv.getString();
-//System.out.println("put(\"" + name.getMethodName() + "\", \"" + actual + "\");");			
+			//System.out.println("put(\"" + name.getMethodName() + "\", \"" + actual + "\");");			
 			assertEquals(expectedCorrect, actual);
 		} catch (Exception e){
 			e.printStackTrace();
@@ -322,79 +322,79 @@ public class TestParser {
 		input[0] = "test{image a}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadDecl6() throws LexicalException, SyntaxException {
 		input[0] = "test{image x;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadDecl7() throws LexicalException, SyntaxException {
 		input[0] = "test{image y;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadDecl8() throws LexicalException, SyntaxException {
 		input[0] = "test{image SCREEN_SIZE;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadDecl9() throws LexicalException, SyntaxException {
 		input[0] = "test{image red;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadDecl10() throws LexicalException, SyntaxException {
 		input[0] = "test{image green;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadDecl11() throws LexicalException, SyntaxException {
 		input[0] = "test{image blue;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadDecl12() throws LexicalException, SyntaxException {
 		input[0] = "test{image height;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadDecl13() throws LexicalException, SyntaxException {
 		input[0] = "test{image width;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadDecl14() throws LexicalException, SyntaxException {
 		input[0] = "test{image x_loc;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadDecl15() throws LexicalException, SyntaxException {
 		input[0] = "test{image y_loc;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadStmnt1() throws LexicalException, SyntaxException{
 		input[0] = "test{abc = def}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadStmnt2() throws LexicalException, SyntaxException{
 		input[0] = "test{abc = def def = abc;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadStmnt3() throws LexicalException, SyntaxException{
 		input[0] = "test{pause 5 != 2 while(5) {;}}";
@@ -406,13 +406,13 @@ public class TestParser {
 		input[0] = "test{pause 5 = 2;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadStmnt5() throws LexicalException, SyntaxException{
 		input[0] = "test{while (5 = 2) {abc = def;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadStmnt6() throws LexicalException, SyntaxException{
 		input[0] = "test{while (5) {abc == def;}";
@@ -424,105 +424,105 @@ public class TestParser {
 		input[0] = "test{while (5) {abc = def}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadStmnt8() throws LexicalException, SyntaxException{
 		input[0] = "test{if (5) { F5 = Z }}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadStmnt9() throws LexicalException, SyntaxException{
 		input[0] = "test{if (5)  5 = Z; }";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadStmnt10() throws LexicalException, SyntaxException{
 		input[0] = "test{if (5)  {F5 = Z;} else {ad = bf;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
-	
-	
+
+
+
 	@Test
 	public void testBadPrg1() throws LexicalException, SyntaxException{
 		input[0] = "Z{if (5)  {F5 = Z;} else {ad = bf;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadPrg2() throws LexicalException, SyntaxException{
 		input[0] = "\"qwe\"{if (5)  {F5 = Z;} else {ad = bf;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadPrg3() throws LexicalException, SyntaxException{
 		input[0] = "height{if (5)  {F5 = Z;} else {ad = bf;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadPrg4() throws LexicalException, SyntaxException{
 		input[0] = "height1 if (5)  {F5 = Z;} else {ad = bf;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testEmptyBraces1() throws LexicalException, SyntaxException {
 		input[0] = "test{; } ";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testEmptyBraces2() throws LexicalException, SyntaxException {
 		input[0] = "test{; ;} ";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testEmptyBraces3() throws LexicalException, SyntaxException {
 		input[0] = "test{while (true) {;} ;} ";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testEmptyBraces4() throws LexicalException, SyntaxException {
 		input[0] = "test{if (5) {;;;} else {;;} }";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testAssign1() throws LexicalException, SyntaxException {
 		input[0] = "test{a = b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testAssign2() throws LexicalException, SyntaxException {
 		input[0] = "test{a = {{a, b, c}};}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testAssign3() throws LexicalException, SyntaxException {
 		input[0] = "test{a = \"abs\";}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testAssign4() throws LexicalException, SyntaxException {
 		input[0] = "test{a.pixels[c, d] = {{a, b, c}};}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testAssign5() throws LexicalException, SyntaxException {
 		input[0] = "test{a.pixels[c, d]red = b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testAssign6() throws LexicalException, SyntaxException {
 		input[0] = "test{a.pixels[c, d]blue = b;}";
@@ -534,37 +534,37 @@ public class TestParser {
 		input[0] = "test{a.pixels[c, d]green = b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testAssign8() throws LexicalException, SyntaxException {
 		input[0] = "test{a.shape = [c, d];}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testAssign9() throws LexicalException, SyntaxException {
 		input[0] = "test{a.location = [c, d];}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testAssign10() throws LexicalException, SyntaxException {
 		input[0] = "test{a.visible = 5;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testBadAssign1() throws LexicalException, SyntaxException {
 		input[0] = "test{a.visible = {{4, 5, 1};}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadAssign2() throws LexicalException, SyntaxException {
 		input[0] = "test{a.location = {{4, 5, 1};}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadAssign3() throws LexicalException, SyntaxException {
 		input[0] = "test{a.shape = {{4, 5, 1};}";
@@ -576,206 +576,206 @@ public class TestParser {
 		input[0] = "test{a.pixels[x,y] red = {{4, 5, 1};}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testExpr1() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a ? b : c;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr2() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a & b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr3() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a | b;}";
 		parseInput(input[0]);
 	}
-	
+
 
 	@Test
 	public void testExpr4() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a | b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr5() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a == b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr6() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a != b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test 
 	public void testExpr7() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a < b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr8() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a > b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr9() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a <= b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr10() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a >= b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr11() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a >= b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr12() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a >> b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr13() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a << b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr14() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a + b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr15() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a - b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr16() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a * b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr17() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a / b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr18() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a % b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr19() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a + b | c;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr20() throws LexicalException, SyntaxException {
 		input[0] = "test{expr = a - b & c;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr21() throws LexicalException, SyntaxException {
 		input[0] = "test{pause a - b == c;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr22() throws LexicalException, SyntaxException {
 		input[0] = "test{pause a < b != c;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr23() throws LexicalException, SyntaxException {
 		input[0] = "test{if (a << b >> c) {;} ;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr24() throws LexicalException, SyntaxException {
 		input[0] = "test{if (ab * bc / cd % de + eff - fg) {;} ;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr25() throws LexicalException, SyntaxException {
 		input[0] = "test{if (a * b / c % d + e - f ? abcd : efgh) {;} ;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr26() throws LexicalException, SyntaxException {
 		input[0] = "test{if (a[a[a[b,c]red,c]green,d]blue) {;} ;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr27() throws LexicalException, SyntaxException {
 		input[0] = "test{if (a.height) {;} ;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr28() throws LexicalException, SyntaxException {
 		input[0] = "test{if (a.width) {;} ;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr29() throws LexicalException, SyntaxException {
 		input[0] = "test{if (x) {;} ;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr30() throws LexicalException, SyntaxException {
 		input[0] = "test{if (y) {;} ;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr31() throws LexicalException, SyntaxException {
 		input[0] = "test{if (Z) {;} ;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr32() throws LexicalException, SyntaxException {
 		input[0] = "test{if (SCREEN_SIZE) {;} ;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr33() throws LexicalException, SyntaxException {
 		input[0] = "test{if (b.x_loc) {;} ;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testExpr34() throws LexicalException, SyntaxException {
 		input[0] = "test{if (b.y_loc) {;} ;}";
@@ -787,7 +787,7 @@ public class TestParser {
 		input[0] = "test{a.shape = if (a == b) {s;}}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadExpr2() throws LexicalException, SyntaxException {
 		input[0] = "test{a.shape = b a = c;}";
@@ -798,125 +798,125 @@ public class TestParser {
 		input[0] = "test{a = \"as\" 4;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadExpr4() throws LexicalException, SyntaxException {
 		input[0] = "test{a = 4; \"as\";}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadExpr5() throws LexicalException, SyntaxException {
 		input[0] = "test{a = b ++ c}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadExpr6() throws LexicalException, SyntaxException {
 		input[0] = "test{a = Z.x_loc}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadProgram1() throws LexicalException, SyntaxException {
 		input[0] = "test{";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadProgram2() throws LexicalException, SyntaxException {
 		input[0] = "test}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
-//	@Test
-//	public void testBadProgram3() throws LexicalException, SyntaxException {
-//		input[0] = "{}";
-//		parseErrorInput(input[0], incorrectKind.get(name.getMethodName()));
-//	}
-	
+
+	//	@Test
+	//	public void testBadProgram3() throws LexicalException, SyntaxException {
+	//		input[0] = "{}";
+	//		parseErrorInput(input[0], incorrectKind.get(name.getMethodName()));
+	//	}
+
 	@Test
 	public void testBadProgram3() throws LexicalException, SyntaxException {
 		input[0] = "test";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testBadProgram4() throws LexicalException, SyntaxException {
 		input[0] = "test{};";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testWeirdSpace1() throws LexicalException, SyntaxException {
 		input[0] = "test{\n image \n a; image \n b;}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testWeirdSpace2() throws LexicalException, SyntaxException {
 		input[0] = "test{stringlit = \" \n \";}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testWeirdSpace3() throws LexicalException, SyntaxException {
 		input[0] = "test{intlit = 123\n123;}";
 		checkErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testLongProg1() throws LexicalException, SyntaxException {
 		input[0] = 
 				"test{"
-					+ "image X;"
-					+ "int i;"
-					+ "int j;"
-					+ "i=0; j=0;"
-					+ "while (i < 500){"
+						+ "image X;"
+						+ "int i;"
+						+ "int j;"
+						+ "i=0; j=0;"
+						+ "while (i < 500){"
 						+ "while (j < 500){"
-							+ "X.pixels[i, j] = {{i*j, i+j, i%j}}; i = i+1; j = j+1;"
+						+ "X.pixels[i, j] = {{i*j, i+j, i%j}}; i = i+1; j = j+1;"
 						+ "}"
-					+ "}"
-				+ "}";
+						+ "}"
+						+ "}";
 		parseInput(input[0]);
 	}
-	
+
 	@Test
 	public void testLongProg2() throws LexicalException, SyntaxException {
 		input[0] = 
 				"test{"
-					+ "image X;"
-					+ "int i;"
-					+ "int j;"
-					+ "i=400; j=500;"
-					+ "X.shape = [400, 500];"
-					+ "X.location = [0, 0];"
-					+ "X. visible = false;"
-					+ "while (i >= 0 & j >= 0){"
+						+ "image X;"
+						+ "int i;"
+						+ "int j;"
+						+ "i=400; j=500;"
+						+ "X.shape = [400, 500];"
+						+ "X.location = [0, 0];"
+						+ "X. visible = false;"
+						+ "while (i >= 0 & j >= 0){"
 						+ "X.pixels[i + j, i * j] red = i * j + 1;"
-					+ "}"
-					+ "X.visible = true;"
-					
+						+ "}"
+						+ "X.visible = true;"
+
 				+ "}";
 		parseInput(input[0]);
 	}
-	
-	
+
+
 	/* Test Error Recovery */
-	
+
 	@Test
 	public void testRecovery1() throws LexicalException, SyntaxException{
 		input[0] = "test{if (5)  {F5 = Z F6 = 4;} else {ad = bf;} if (6) {F4 = 2;} else {ad = f g =h;}}";
 		parseErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testRecovery2() throws LexicalException, SyntaxException {
 		input[0] = "test{a.shape = if (a == b) {s;}}";
 		parseErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testRecovery3() throws LexicalException, SyntaxException {
 		input[0] = "test{ "
@@ -929,28 +929,29 @@ public class TestParser {
 				+ "}";
 		parseErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testRecovery4() throws LexicalException, SyntaxException {
 		input[0] = "test{image x1 pixel y1; int x2 boolean y2;}";
 		parseErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
+
 	@Test
 	public void testRecovery5() throws LexicalException, SyntaxException {
 		input[0] = "test{image x1 y1 = 5; y1 = 6 y1 = 7;}";
 		parseErrorInput(input[0], incorrectKind.get(name.getMethodName()));
 	}
-	
-	
-	
+
+
+
+	@SuppressWarnings("serial")
 	private final static Map<String, Kind[]> incorrectKind = new HashMap<String, Kind[]>(){{
 		put("testRecovery1", new Kind[]{Kind.IDENT, Kind.IDENT});
 		put("testRecovery2", new Kind[]{Kind._if, Kind.SEMI});
 		put("testRecovery3", new Kind[]{Kind.SEMI, Kind.INT_LIT});
 		put("testRecovery4", new Kind[]{Kind.pixel, Kind._boolean});
 		put("testRecovery5", new Kind[]{Kind.IDENT, Kind.IDENT});
-		
+
 		// Not used
 		put("testBadStmnt1", new Kind[]{Kind.RBRACE, Kind.EOF});
 		put("testBadStmnt2", new Kind[]{Kind.IDENT});
@@ -1000,8 +1001,9 @@ public class TestParser {
 		put("testBadDecl14", new Kind[]{Kind.x_loc});
 		put("testBadDecl15", new Kind[]{Kind.y_loc});
 	}};
-	
-	
+
+
+	@SuppressWarnings("serial")
 	private final static Map<String, String> treeString = new HashMap<String, String>(){{
 
 		put("testEmptyDecl1", "Program:test#  AssignExprStmt:#    abc#    IdentExpr: def#");
@@ -1069,5 +1071,5 @@ public class TestParser {
 		put("testExpr34", "Program:test#  AlternativeStmt:@    ImageAttributeExpr:@      b#      y_loc    if    else#");
 
 	}};
-	
+
 }

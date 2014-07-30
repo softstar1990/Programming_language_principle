@@ -50,9 +50,9 @@ public class TokenStream{
 		for (int i = 1; i != inputChars.length; i++) {
 			char ch = inputChars[i];
 			if ((ch == '\n' && prev != '\r') || ch == '\r'
-				|| ch == '\u0085' || ch == '\u2028' || ch == '\u2029'){
+					|| ch == '\u0085' || ch == '\u2028' || ch == '\u2029'){
 				tmp[lineCnt++] = i;
-			prev = ch;
+				prev = ch;
 			}
 		}
 		// trim
@@ -75,31 +75,31 @@ public class TokenStream{
 		sb.getChars(0, sb.length(), chars, 0);
 		return chars;
 	}
-	
+
 	public int getLineNumber(int pos){
 		int insPt = Arrays.binarySearch(lineBreaks, pos);
 		int lineNum = Math.abs(insPt + 1);
 		return lineNum;
 	}
-	
+
 	public int getPosInLine(int pos){
 		int lineNum = getLineNumber(pos);
 		int posInLine = pos - lineBreaks[lineNum - 1];
 		return posInLine;
 	}
-	
+
 	public Token getToken(int i){
 		return tokens.get(i);
 	}
-	
+
 	public int getNumTokens(){
 		return tokens.size();
 	}
-	
+
 	public Token getComment(int i){
 		return comments.get(i);
 	}
-	
+
 	public int getNumComments(){
 		return comments.size();
 	}
@@ -112,19 +112,19 @@ public class TokenStream{
 		}
 		return sb.toString();
 	}
-	
+
 	public String tokenTextListToString(){
 		StringBuilder sb = new StringBuilder();
 		for (Token t : tokens) {
 			String txt = t.getText();
 			if(!txt.equals("")){
-			sb.append(t.getText());
-			sb.append(',');
+				sb.append(t.getText());
+				sb.append(',');
 			}
 		}
 		return sb.toString();
 	}
-	
+
 	public static enum Kind {
 		/* ident ::= ident_start  ident_part*    (but not keyword)  
 		 *           ident_start ::=  A .. Z | a .. z | $ | _  
@@ -146,7 +146,7 @@ public class TokenStream{
 		_if, _else, 
 		/* int_literal ::= 0 |  ( (1..9) (0..9)*  ) */
 		INT_LIT,
-		/* string_literal ∷= “ NOT(“)* “ */
+		/* string_literal ���= ��� NOT(���)* ��� */
 		STRING_LIT,
 		/*boolean_literal := true | false*/
 		BOOLEAN_LIT,
@@ -159,7 +159,7 @@ public class TokenStream{
 		/* comment */
 		COMMENT;
 	}
-	
+
 	/* This is a non-static inner class.  Each instance is linked to a
 	 * instance of StreamToken and can access that instance's variables.  
 	 *
@@ -171,7 +171,7 @@ public class TokenStream{
 	 */
 	@SuppressWarnings("serial")
 	public class LexicalException extends Exception {
-	    int pos;
+		int pos;
 		public LexicalException(int pos, String msg) {
 			super(msg);
 			this.pos = pos;
@@ -188,7 +188,7 @@ public class TokenStream{
 	 * Example of token creation where stream is an instance of TokenStream:  
 	 *       Token t = stream.new Token(SEMI, beg, end);
 	 */
-	 
+
 	public class Token {
 		public final Kind kind;
 		public final int beg;
@@ -205,7 +205,7 @@ public class TokenStream{
 			assert kind == Kind.INT_LIT : "attempted to get value of non-number token";
 			return Integer.valueOf(getText());
 		}
-		
+
 		/* this should only be applied to Tokens with kind==BOOLEAN_LIT */
 		public boolean getBooleanVal(){
 			assert kind == Kind.BOOLEAN_LIT: "attempted to get boolean value of non-boolean token";
@@ -229,7 +229,7 @@ public class TokenStream{
 					.append(getText()).append(beg).append(",")
 					.append(end).append(">")).toString();
 		}
-		
+
 		public boolean equals(Object o){
 			if (! (o instanceof Token)) return false;
 			Token other = (Token)o;

@@ -1,14 +1,63 @@
 package cop5555fa13;
 
+import static cop5555fa13.TokenStream.Kind.AND;
+import static cop5555fa13.TokenStream.Kind.ASSIGN;
+import static cop5555fa13.TokenStream.Kind.BOOLEAN_LIT;
+import static cop5555fa13.TokenStream.Kind.COLON;
+import static cop5555fa13.TokenStream.Kind.COMMA;
+import static cop5555fa13.TokenStream.Kind.DIV;
+import static cop5555fa13.TokenStream.Kind.DOT;
+import static cop5555fa13.TokenStream.Kind.EOF;
+import static cop5555fa13.TokenStream.Kind.EQ;
+import static cop5555fa13.TokenStream.Kind.GEQ;
+import static cop5555fa13.TokenStream.Kind.GT;
+import static cop5555fa13.TokenStream.Kind.IDENT;
+import static cop5555fa13.TokenStream.Kind.INT_LIT;
+import static cop5555fa13.TokenStream.Kind.LBRACE;
+import static cop5555fa13.TokenStream.Kind.LEQ;
+import static cop5555fa13.TokenStream.Kind.LPAREN;
+import static cop5555fa13.TokenStream.Kind.LSHIFT;
+import static cop5555fa13.TokenStream.Kind.LSQUARE;
+import static cop5555fa13.TokenStream.Kind.LT;
+import static cop5555fa13.TokenStream.Kind.MINUS;
+import static cop5555fa13.TokenStream.Kind.MOD;
+import static cop5555fa13.TokenStream.Kind.NEQ;
+import static cop5555fa13.TokenStream.Kind.OR;
+import static cop5555fa13.TokenStream.Kind.PLUS;
+import static cop5555fa13.TokenStream.Kind.QUESTION;
+import static cop5555fa13.TokenStream.Kind.RBRACE;
+import static cop5555fa13.TokenStream.Kind.RPAREN;
+import static cop5555fa13.TokenStream.Kind.RSHIFT;
+import static cop5555fa13.TokenStream.Kind.RSQUARE;
+import static cop5555fa13.TokenStream.Kind.SCREEN_SIZE;
+import static cop5555fa13.TokenStream.Kind.SEMI;
+import static cop5555fa13.TokenStream.Kind.STRING_LIT;
+import static cop5555fa13.TokenStream.Kind.TIMES;
+import static cop5555fa13.TokenStream.Kind.Z;
+import static cop5555fa13.TokenStream.Kind._boolean;
+import static cop5555fa13.TokenStream.Kind._else;
+import static cop5555fa13.TokenStream.Kind._if;
+import static cop5555fa13.TokenStream.Kind._int;
+import static cop5555fa13.TokenStream.Kind._while;
+import static cop5555fa13.TokenStream.Kind.blue;
+import static cop5555fa13.TokenStream.Kind.green;
+import static cop5555fa13.TokenStream.Kind.height;
+import static cop5555fa13.TokenStream.Kind.image;
+import static cop5555fa13.TokenStream.Kind.pause;
+import static cop5555fa13.TokenStream.Kind.pixel;
+import static cop5555fa13.TokenStream.Kind.red;
+import static cop5555fa13.TokenStream.Kind.width;
+import static cop5555fa13.TokenStream.Kind.x;
+import static cop5555fa13.TokenStream.Kind.x_loc;
+import static cop5555fa13.TokenStream.Kind.y;
+import static cop5555fa13.TokenStream.Kind.y_loc;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static cop5555fa13.TokenStream.Kind.*;
-import cop5555fa13.TokenStream;
 import cop5555fa13.TokenStream.Kind;
 import cop5555fa13.TokenStream.LexicalException;
 import cop5555fa13.TokenStream.Token;
-import cop5555fa13.ast.ASTNode;
 import cop5555fa13.ast.AlternativeStmt;
 import cop5555fa13.ast.AssignExprStmt;
 import cop5555fa13.ast.AssignPixelStmt;
@@ -16,7 +65,6 @@ import cop5555fa13.ast.AssignStmt;
 import cop5555fa13.ast.BinaryExpr;
 import cop5555fa13.ast.BooleanLitExpr;
 import cop5555fa13.ast.ConditionalExpr;
-import cop5555fa13.ast.PreDefExpr;
 import cop5555fa13.ast.Dec;
 import cop5555fa13.ast.Expr;
 import cop5555fa13.ast.FileAssignStmt;
@@ -26,6 +74,7 @@ import cop5555fa13.ast.IntLitExpr;
 import cop5555fa13.ast.IterationStmt;
 import cop5555fa13.ast.PauseStmt;
 import cop5555fa13.ast.Pixel;
+import cop5555fa13.ast.PreDefExpr;
 import cop5555fa13.ast.Program;
 import cop5555fa13.ast.SampleExpr;
 import cop5555fa13.ast.ScreenLocationAssignmentStmt;
@@ -50,7 +99,7 @@ public class Parser {
 		public String toString() {
 			return super.toString() + "\n" + t.toString();
 		}
-		
+
 		public Kind getKind(){
 			return t.kind;
 		}
@@ -62,10 +111,10 @@ public class Parser {
 	Token progName;  //keep the program name in case you don't generate an AST
 	public List<SyntaxException> errorList;  //save the error for grading purposes
 
-    /** creates a simple parser.  
-     * 
-     * @param initialized_stream  a TokenStream that has already been initialized by the Scanner 
-     */
+	/** creates a simple parser.  
+	 * 
+	 * @param initialized_stream  a TokenStream that has already been initialized by the Scanner 
+	 */
 	public Parser(TokenStream initialized_stream) {
 		this.stream = initialized_stream;
 		errorList = new ArrayList<SyntaxException>();
@@ -97,20 +146,20 @@ public class Parser {
 		else 
 			return null;
 	}
-	
+
 	public List<SyntaxException> getErrorList(){
 		return errorList;
 	}
-	
+
 	public String getProgName(){
 		return (progName != null ?  progName.getText() : "no program name");
 	}
-	
+
 	/* You will need to add more methods*/
 	private void consume() {
 		t = stream.getToken(i++);
 	}
-	
+
 	/* Java hint -- Methods with a variable number of parameters may be useful.  
 	 * For example, this method takes a token and variable number of "kinds", and indicates whether the
 	 * kind of the given token is among them.  The Java compiler creates an array holding the given parameters.
@@ -122,11 +171,11 @@ public class Parser {
 		}
 		return false;
 	}   
-		
+
 	private void error(String msg) throws SyntaxException {
 		throw new SyntaxException(t, msg);
 	}
-	
+
 	private Token match(Kind kind) throws SyntaxException  {
 		if (isKind(t, kind)) {
 			Token name = t;
@@ -138,7 +187,7 @@ public class Parser {
 		}
 	}
 
-	
+
 	/**
 	 * Program ::= ident { Dec* Stmt* }
 	 * 
@@ -152,7 +201,7 @@ public class Parser {
 			while (!isKind(t,IDENT,EOF,LBRACE)){ consume(); }
 			if(isKind(t,IDENT)) {consume();}
 		}
-		
+
 		try {
 			match(LBRACE);
 		} catch (SyntaxException e) {
@@ -160,7 +209,7 @@ public class Parser {
 			while (!isKind(t,LBRACE,SEMI,image,_int,_boolean,pixel,EOF)){ consume(); }
 			if(isKind(t,LBRACE)) {consume();}
 		}
-		
+
 		List<Dec> decList = new ArrayList<Dec>();
 		while (isKind(t,image,pixel,_int,_boolean)) {
 			try{
@@ -173,7 +222,7 @@ public class Parser {
 				if (isKind(t,SEMI)){consume();}  //IF A SEMI, CONSUME IT BEFORE CONTINUING
 			}
 		}
-		
+
 		List<Stmt> stmtList = new ArrayList<Stmt>();
 		while (isKind(t,SEMI,IDENT,pause,_while,_if)) {
 			try{
@@ -188,7 +237,7 @@ public class Parser {
 				if (isKind(t,SEMI)){consume();} 
 			}
 		}
-		
+
 		try {
 			match(RBRACE);
 		} catch (SyntaxException e) {
@@ -196,8 +245,8 @@ public class Parser {
 			while (!isKind(t,RBRACE,EOF)){ consume(); }
 			if(isKind(t,RBRACE)){consume();}
 		} 
-		
-//		return new Program(progName, decList, stmtList);		
+
+		//		return new Program(progName, decList, stmtList);		
 		if (errorList.isEmpty()) return new Program(progName, decList, stmtList);
 		System.out.println("error" + (errorList.size()>1?"s parsing program ":" parsing program ") + getProgName());
 		for(SyntaxException e: errorList){		
@@ -205,14 +254,14 @@ public class Parser {
 		}
 		return null; 
 	}
-	
+
 	private Dec parseDec() throws SyntaxException{
 		Kind type = parseType();
 		Token ident = match(IDENT);
 		match(SEMI);
 		return new Dec(type, ident);
 	}
-	
+
 	private Kind parseType() throws SyntaxException{
 		if(isKind(t,image,pixel,_int,_boolean)){
 			Kind temp = t.kind;
@@ -223,7 +272,7 @@ public class Parser {
 			return null;
 		}
 	}		
-	
+
 	private Stmt parseStmt() throws SyntaxException{
 		Stmt stmt = null;		
 		if(isKind(t,SEMI)){
@@ -267,16 +316,16 @@ public class Parser {
 		}
 		return stmt;
 	}
-	
+
 	private PauseStmt parsePauseStmt() throws SyntaxException{
 		match(pause);
 		Expr expr = parseExpr();
 		match(SEMI);
-		
+
 		if (errorList.isEmpty()) return new PauseStmt(expr);
 		return null;
 	}
-	
+
 	private IterationStmt parseIterationStmt() throws SyntaxException{
 		match(_while);
 		match(LPAREN);
@@ -297,10 +346,10 @@ public class Parser {
 			}
 		}
 		match(RBRACE);
-		
+
 		return new IterationStmt(expr, stmtList);
 	}
-	
+
 	private AlternativeStmt parseAlternativeStmt() throws SyntaxException{
 		match(_if);
 		match(LPAREN);
@@ -339,10 +388,10 @@ public class Parser {
 			}
 			match(RBRACE);
 		}
-		
+
 		return new AlternativeStmt(expr, ifStmtList, elseStmtList);
 	}
-	
+
 	private AssignStmt parseAssignStmt() throws SyntaxException{
 		AssignStmt assignstmt = null;
 		Token lhsIdent = match(IDENT);
@@ -427,10 +476,10 @@ public class Parser {
 			error("i cannot construct the assignment statement");
 		}
 		match(SEMI);
-		
+
 		return assignstmt;
 	}
-	
+
 	private Pixel parsePixel() throws SyntaxException{
 		match(LBRACE);
 		match(LBRACE);
@@ -441,10 +490,10 @@ public class Parser {
 		Expr blueExpr = parseExpr();
 		match(RBRACE);
 		match(RBRACE);
-		
+
 		return new Pixel(redExpr, greenExpr, blueExpr);
 	}
-	
+
 	private Expr parseExpr() throws SyntaxException{
 		Expr condition = parseOrexpr();
 		if (isKind(t, QUESTION)) {
@@ -456,7 +505,7 @@ public class Parser {
 		}
 		return condition;
 	}
-	
+
 	private Expr parseOrexpr() throws SyntaxException{
 		Expr e0 = null;
 		Expr e1 = null;
@@ -469,7 +518,7 @@ public class Parser {
 		}
 		return e0;
 	}
-	
+
 	private Expr parseAndExpr() throws SyntaxException{
 		Expr e0 = null;
 		Expr e1 = null;
@@ -482,7 +531,7 @@ public class Parser {
 		}
 		return e0;
 	}
-	
+
 	private Expr parseEqualityExpr() throws SyntaxException{
 		Expr e0 = null;
 		Expr e1 = null;
@@ -495,7 +544,7 @@ public class Parser {
 		}
 		return e0;
 	}
-	
+
 	private Expr parseRelExpr() throws SyntaxException{
 		Expr e0 = null;
 		Expr e1 = null;
@@ -508,7 +557,7 @@ public class Parser {
 		}
 		return e0;
 	}
-	
+
 	private Expr parseShiftExpr() throws SyntaxException{
 		Expr e0 = null;
 		Expr e1 = null;
@@ -521,7 +570,7 @@ public class Parser {
 		}
 		return e0;
 	}
-	
+
 	private Expr parseAddExpr() throws SyntaxException{
 		Expr e0 = null;
 		Expr e1 = null;
@@ -534,7 +583,7 @@ public class Parser {
 		}
 		return e0;
 	}
-	
+
 	private Expr parseMultExpr() throws SyntaxException{
 		Expr e0 = null;
 		Expr e1 = null;
@@ -547,7 +596,7 @@ public class Parser {
 		}
 		return e0;
 	}
-	
+
 	private Expr parsePrimaryExpr() throws SyntaxException{
 		Expr e = null;
 		switch (t.kind) {

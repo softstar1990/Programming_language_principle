@@ -19,7 +19,7 @@ public class SimpleParser {
 		public String toString() {
 			return super.toString() + "\n" + t.toString();
 		}
-		
+
 		public Kind getKind(){
 			return t.kind;
 		}
@@ -30,10 +30,10 @@ public class SimpleParser {
 	Token t;
 	/* You will need additional fields */
 
-    /** creates a simple parser.  
-     * 
-     * @param initialized_stream  a TokenStream that has already been initialized by the Scanner 
-     */
+	/** creates a simple parser.  
+	 * 
+	 * @param initialized_stream  a TokenStream that has already been initialized by the Scanner 
+	 */
 	public SimpleParser(TokenStream initialized_stream) {
 		this.stream = initialized_stream;
 		Scanner s = new Scanner(stream);
@@ -52,15 +52,15 @@ public class SimpleParser {
 	 * error message will not be graded, but the "kind" of the token will be.
 	 */
 	public void parse() throws SyntaxException {
-	    /* You definitely need to do more here */
+		/* You definitely need to do more here */
 		program();
 	}
-	
+
 	/* You will need to add more methods*/
 	private void consume() {
 		t = stream.getToken(i++);
 	}
-	
+
 	/* Java hint -- Methods with a variable number of parameters may be useful.  
 	 * For example, this method takes a token and variable number of "kinds", and indicates whether the
 	 * kind of the given token is among them.  The Java compiler creates an array holding the given parameters.
@@ -72,7 +72,7 @@ public class SimpleParser {
 		}
 		return false;
 	}
-	   
+
 	private void match(Kind kind) throws SyntaxException  {
 		if (isKind(t, kind)) {
 			consume();
@@ -82,7 +82,7 @@ public class SimpleParser {
 			//error("expected " + kind);
 		}
 	}
-		
+
 	private void error(String msg) throws SyntaxException {
 		throw new SyntaxException(t, msg);
 	}
@@ -99,13 +99,13 @@ public class SimpleParser {
 		match(Kind.RBRACE); 
 		match(Kind.EOF);
 	}
-	
+
 	void dec() throws SyntaxException{
 		type();
 		match(Kind.IDENT);
 		match(Kind.SEMI);
 	}
-	
+
 	void type() throws SyntaxException{
 		if(isKind(t,Kind.image,Kind.pixel,Kind._int,Kind._boolean)){
 			consume();
@@ -114,7 +114,7 @@ public class SimpleParser {
 			//error("i cannot find a type!");
 		}
 	}
-	
+
 	void pixel() throws SyntaxException{
 		match(Kind.LBRACE);
 		match(Kind.LBRACE);
@@ -126,7 +126,7 @@ public class SimpleParser {
 		match(Kind.RBRACE);
 		match(Kind.RBRACE);
 	}
-	
+
 	void stmt() throws SyntaxException{
 		if(isKind(t,Kind.SEMI)){
 			consume();
@@ -143,13 +143,13 @@ public class SimpleParser {
 			//error("i cannot construct the statement!");
 		}
 	}
-	
+
 	void pausestmt() throws SyntaxException{
 		match(Kind.pause);
 		expr();
 		match(Kind.SEMI);
 	}
-	
+
 	void iterationstmt() throws SyntaxException{
 		match(Kind._while);
 		match(Kind.LPAREN);
@@ -161,7 +161,7 @@ public class SimpleParser {
 		}
 		match(Kind.RBRACE);
 	}
-	
+
 	void alternativestmt() throws SyntaxException{
 		match(Kind._if);
 		match(Kind.LPAREN);
@@ -181,7 +181,7 @@ public class SimpleParser {
 			match(Kind.RBRACE);
 		}
 	}
-	
+
 	void assignstmt() throws SyntaxException{
 		match(Kind.IDENT);
 		if(isKind(t, Kind.ASSIGN)){
@@ -243,7 +243,7 @@ public class SimpleParser {
 		}
 		match(Kind.SEMI);
 	}
-	
+
 	void expr() throws SyntaxException{
 		orexpr();
 		if (isKind(t, Kind.QUESTION)) {
@@ -253,7 +253,7 @@ public class SimpleParser {
 			expr();
 		}
 	}
-	
+
 	void orexpr() throws SyntaxException{
 		andexpr();
 		while (isKind(t, Kind.OR)) {
@@ -261,7 +261,7 @@ public class SimpleParser {
 			andexpr();
 		}
 	}
-	
+
 	void andexpr() throws SyntaxException{
 		equalityexpr();
 		while(isKind(t, Kind.AND)){
@@ -269,7 +269,7 @@ public class SimpleParser {
 			equalityexpr();
 		}
 	}
-	
+
 	void equalityexpr() throws SyntaxException{
 		relexpr();
 		while(isKind(t, Kind.EQ,Kind.NEQ)){
@@ -277,7 +277,7 @@ public class SimpleParser {
 			relexpr();
 		}
 	}
-	
+
 	void relexpr() throws SyntaxException{
 		shiftexpr();
 		while(isKind(t, Kind.LT,Kind.GT,Kind.LEQ,Kind.GEQ)){
@@ -285,7 +285,7 @@ public class SimpleParser {
 			shiftexpr();
 		}
 	}
-	
+
 	void shiftexpr() throws SyntaxException{
 		addexpr();
 		while (isKind(t, Kind.LSHIFT,Kind.RSHIFT)) {
@@ -293,7 +293,7 @@ public class SimpleParser {
 			addexpr();
 		}
 	}
-	
+
 	void addexpr() throws SyntaxException{
 		multexpr();
 		while(isKind(t, Kind.PLUS,Kind.MINUS)){
@@ -301,7 +301,7 @@ public class SimpleParser {
 			multexpr();
 		}
 	}
-	
+
 	void multexpr() throws SyntaxException{
 		primaryexpr();
 		while(isKind(t, Kind.TIMES,Kind.DIV,Kind.MOD)){
@@ -309,7 +309,7 @@ public class SimpleParser {
 			primaryexpr();
 		}
 	}
-	
+
 	void primaryexpr() throws SyntaxException{
 		switch (t.kind) {
 		case INT_LIT:case BOOLEAN_LIT:case x:case y:case Z:case SCREEN_SIZE:

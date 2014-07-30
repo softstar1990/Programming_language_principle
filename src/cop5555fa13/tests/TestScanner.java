@@ -7,10 +7,8 @@ import java.util.Arrays;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.MethodRule;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
-import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
 import cop5555fa13.Scanner;
@@ -20,52 +18,52 @@ import cop5555fa13.TokenStream.LexicalException;
 
 public class TestScanner {
 
-	
+
 	String[] input = new String[1];
 	Kind[] expected;
-	
-    public class PrintInputOnException extends Timeout{
 
-        public PrintInputOnException(int millis) {
-            super(millis);
-        }
+	public class PrintInputOnException extends Timeout{
 
-        @Override
-        public Statement apply(Statement base, org.junit.runner.Description description) {
-        
-            final Statement fromSuper = super.apply(base, description);
-            return new Statement() {
+		public PrintInputOnException(int millis) {
+			super(millis);
+		}
 
-                @Override
-                public void evaluate() throws Throwable {
-                    String errString = null;
-                    try{
-                        fromSuper.evaluate();
-                    } catch (LexicalException e){
-                        errString = "Original Input : " + input[0] + "\t, Expected = " + Arrays.toString(expected) + "\n";
-                    } catch (AssertionError e) {
-                        errString = "Original Input : " + input[0] + "\t, Expected = " + Arrays.toString(expected) + "\n";
-                        throw new AssertionError(errString, e);
-                    } catch (RuntimeException e) {
-                        errString = "Original Input : " + input[0] + "\t, Expected = " + Arrays.toString(expected) + "\n";
-                        throw new RuntimeException(errString, e);
-                    } catch (Exception e){
-                        errString = "Original Input : " + input[0] + "\t, Expected = " + Arrays.toString(expected) + "\n";
-                        throw new Exception(errString, e);
-                    }
-                }
-            };
-        }
+		@Override
+		public Statement apply(Statement base, org.junit.runner.Description description) {
 
-    }
+			final Statement fromSuper = super.apply(base, description);
+			return new Statement() {
 
-    @Rule public TestRule globalTimeout= new PrintInputOnException(10000); //5 second timeout
+				@Override
+				public void evaluate() throws Throwable {
+					String errString = null;
+					try{
+						fromSuper.evaluate();
+					} catch (LexicalException e){
+						errString = "Original Input : " + input[0] + "\t, Expected = " + Arrays.toString(expected) + "\n";
+					} catch (AssertionError e) {
+						errString = "Original Input : " + input[0] + "\t, Expected = " + Arrays.toString(expected) + "\n";
+						throw new AssertionError(errString, e);
+					} catch (RuntimeException e) {
+						errString = "Original Input : " + input[0] + "\t, Expected = " + Arrays.toString(expected) + "\n";
+						throw new RuntimeException(errString, e);
+					} catch (Exception e){
+						errString = "Original Input : " + input[0] + "\t, Expected = " + Arrays.toString(expected) + "\n";
+						throw new Exception(errString, e);
+					}
+				}
+			};
+		}
+
+	}
+
+	@Rule public TestRule globalTimeout= new PrintInputOnException(10000); //5 second timeout
 
 
-	
-//	@Rule
-//	public Timeout globalTimeout = new Timeout(10000); // 10 seconds max per
-														// method tested
+
+	//	@Rule
+	//	public Timeout globalTimeout = new Timeout(10000); // 10 seconds max per
+	// method tested
 
 	/*
 	 * creates a scanner to tokenize the input string and compares the results
@@ -147,8 +145,8 @@ public class TestScanner {
 	public void testScan0() throws Exception {
 		String input = "this is a test test ";
 		String expected = "this,is,a,test,test,"; // comma separated (and
-													// terminated)
-													// text of tokens in input
+		// terminated)
+		// text of tokens in input
 		compareText(input, expected);
 	}
 
